@@ -21,23 +21,14 @@ class Sorter {
   }
 
   sort(indices) {
-    let sortedIndices = indices.slice().sort((a, b) => a - b);
     let elements = this._elements;
-
-    let swapped;
-    do {
-      swapped = false;
-      for (let i = 0; i < sortedIndices.length - 1; i++) {
-        let aIndex = sortedIndices[i];
-        let bIndex = sortedIndices[i + 1];
-        if (this._comparator(elements[aIndex], elements[bIndex]) > 0) {
-          let temp = elements[aIndex];
-          elements[aIndex] = elements[bIndex];
-          elements[bIndex] = temp;
-          swapped = true;
-        }
-      }
-    } while (swapped);
+    let sortedIndices = indices.slice().sort((a, b) => a - b);
+    let sortedElements = sortedIndices
+      .map(idx => elements[idx])
+      .sort(this._comparator);
+    for (let i = 0; i < sortedIndices.length; i++) {
+      elements[sortedIndices[i]] = sortedElements[i];
+    }
   }
 
   setComparator(compareFunction) {
